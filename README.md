@@ -1,6 +1,6 @@
 # 🏦 Loan Approval Prediction System (ML + Web App)
 
-🚀 **Live Demo:** https://your-app-name.streamlit.app
+🚀 **Live Demo:** https://loan-approval-prediction-ml-xbt6h27uywavurqn8tmsul.streamlit.app/
 
 ---
 
