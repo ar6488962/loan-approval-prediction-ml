@@ -234,23 +234,29 @@ if predict_button:
         business_rejection_reason = None
         final_prediction = prediction[0]  # Start with model prediction
         
+        # Rule 0: Edge case validation - Zero income or zero loan amount
+        if total_income == 0:
+            final_prediction = 'N'
+            business_rejection_reason = "Applicant has zero income"
+        elif loan_amount == 0:
+            final_prediction = 'N'
+            business_rejection_reason = "Loan amount cannot be zero"
+        
         # Rule 1: If credit history is bad (0), automatically reject
-        if credit_history == 0:
+        elif credit_history == 0:
             final_prediction = 'N'
             business_rejection_reason = "Bad/No credit history"
         
         # Rule 2: Loan-to-Income ratio should be < 4.0 for approval
         # (i.e., monthly income should be at least 25% of monthly loan payment)
-        if total_income > 0:
+        elif total_income > 0:
             monthly_emi = loan_amount / loan_term  # Simplified EMI calculation
             loan_to_income = monthly_emi / total_income
             if loan_to_income > 4.0 and final_prediction == 'Y':
                 final_prediction = 'N'
                 business_rejection_reason = f"Loan-to-Income ratio too high ({loan_to_income:.2f})"
-        
-        # Rule 3: Minimum income threshold
-        if total_income < 5000 and loan_amount > 100000:
-            if final_prediction == 'Y':
+            # Rule 3: Minimum income threshold
+            elif total_income < 5000 and loan_amount > 100000:
                 final_prediction = 'N'
                 business_rejection_reason = "Income too low for requested loan amount"
         
